@@ -27,7 +27,7 @@ public class CamelRouter extends RouteBuilder {
             .component("servlet")
             .bindingMode(RestBindingMode.json);
         
-        rest("/greetings").description("Greetings REST service")
+        rest("/greetings/{name}/{address}").description("Greetings REST service")
             .consumes("application/json")
             .produces("application/json")
 
@@ -45,7 +45,7 @@ public class CamelRouter extends RouteBuilder {
             .onFallback()
                 // we use a fallback without network that provides a response message immediately
                 .log(" We are falling back!!!!")
-                .transform().simple("{ name: \"default fallback\" }")
+                .transform().simple("{ name: \"default fallback\", address: \"fallback address\" }")
             .end()
             .to("bean:greetingsService?method=getGreetings");     
         // @formatter:on

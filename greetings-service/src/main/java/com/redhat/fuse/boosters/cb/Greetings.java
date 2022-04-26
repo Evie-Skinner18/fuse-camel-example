@@ -22,5 +22,4 @@ public class Greetings {
     public void setGreetings(String greetings) {
         this.greetings = greetings;
     }
-
 }

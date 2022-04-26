@@ -21,7 +21,7 @@ public class CamelRouter extends RouteBuilder {
         
         rest("/name").description("Name REST service")
             .consumes("application/json")
-            .produces("application/json")
+            .produces("application/json")   
 
             .get().description("Generate a Name").outType(Name.class)
                 .responseMessage().code(200).endResponseMessage()

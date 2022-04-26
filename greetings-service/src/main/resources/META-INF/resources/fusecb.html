@@ -44,6 +44,7 @@ service is running.</p>
 			<form class="form-inline" id="raise-a-repair-form">
 				<input id="name" type="text" placeholder="Enter your first name" class=""/>
 				<input id="address" type="text" placeholder="Enter your address" class=""/>
+				<button id="start" class="btn btn-primary">Start</button>
 			</form>
 		</div>
 
@@ -51,7 +52,6 @@ service is running.</p>
 			<h2>Greeting Service</h2>
 			<form class="form-inline">
 				<button id="stop" type="submit" class="btn btn-primary">Stop</button>
-				<button id="start" type="submit" class="btn btn-primary">Start</button>
 				<button id="clear" type="submit" class="btn btn-success">Clear</button>
 			</form>
 			<h3>Results:</h3>
@@ -62,38 +62,37 @@ service is running.</p>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
         $(document).ready(function() {
-			console.log('Hello');
-			const nameInput = $("#name");
-			console.log(nameInput.val());
-
-            var started=false;
             function sleep(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
+
             async function callGreetingsService() {
-                while (started) {
-                    $.getJSON("/camel/greetings", function (res) {
-                        $("#greetings-result").prepend(JSON.stringify(res) + "\n");
-                    });
-                    await sleep(1000);
-                }
+				const nameInput = $("#name");
+				const addressInput = $("#address");
+
+				const nameValue = nameInput.val();
+				const addressValue = addressInput.val();
+
+				console.log(nameValue);
+				console.log(addressValue);
+
+				$.getJSON(`/camel/greetings/${nameValue}/${addressValue}`, function (res) {
+					$("#greetings-result").prepend(JSON.stringify(res) + "\n");
+				});
+
             }
-            $("#clear").click(function(e) {
-                $("#greetings-result").html("");
-                e.preventDefault();
-            });
+            // $("#clear").click(function(e) {
+            //     $("#greetings-result").html("");
+            //     e.preventDefault();
+            // });
             $("#start").click(async function(e) {
-                started=false;
-                await sleep(1000);
-                started=true;
-                e.preventDefault();
+				e.preventDefault();
                 callGreetingsService();
             });
-            $("#stop").click(function(e) {
-                started=false;
-                e.preventDefault();
-            });
-            callGreetingsService();
+            // $("#stop").click(function(e) {
+            //     e.preventDefault();
+            // });
+            // callGreetingsService();
         });
 	</script>
 </div>
