@@ -12,6 +12,6 @@ public interface NameService {
      *
      * @return a string name
      */
-    Name getName(String name);
+    Name getName();
 
 }
