@@ -1,5 +1,6 @@
 package com.redhat.fuse.boosters.cb;
 
+
 /**
  * Service interface for name service.
  * 
@@ -11,6 +12,6 @@ public interface NameService {
      *
      * @return a string name
      */
-    Name getName();
+    Name getName(String name);
 
 }

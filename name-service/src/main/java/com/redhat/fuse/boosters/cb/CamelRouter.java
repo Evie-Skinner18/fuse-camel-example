@@ -1,5 +1,6 @@
 package com.redhat.fuse.boosters.cb;
 
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,9 @@ public class CamelRouter extends RouteBuilder {
             .component("servlet")
             .bindingMode(RestBindingMode.json);
         
-        rest("/name").description("Name REST service")
+        rest("/name/{name}").description("Name REST service")
             .consumes("application/json")
-            .produces("application/json")   
+            .produces("application/json")
 
             .get().description("Generate a Name").outType(Name.class)
                 .responseMessage().code(200).endResponseMessage()

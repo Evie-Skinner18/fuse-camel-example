@@ -40,7 +40,8 @@ public class CamelRouter extends RouteBuilder {
             .hystrix().id("CamelHystrix")
                 // see application.properties how hystrix is configured
                 .log(" Try to call name Service")
-                .to("http://"+nameServiceHost+":"+nameServicePort+"/camel/name?bridgeEndpoint=true")
+                .log("${body}")
+                .to("http://"+nameServiceHost+":"+nameServicePort+"/camel/name/{name}?bridgeEndpoint=true")
                 .log(" Successfully called name Service")
             .onFallback()
                 // we use a fallback without network that provides a response message immediately
