@@ -26,7 +26,7 @@ public class CamelRouter extends RouteBuilder {
 
             .get().description("Generate a Name").outType(Name.class)
                 .responseMessage().code(200).endResponseMessage()
-                .to("bean:nameService?method=getName");
+                .to("bean:nameService?method=getName(${header.name})");
         // @formatter:on
     }
 
