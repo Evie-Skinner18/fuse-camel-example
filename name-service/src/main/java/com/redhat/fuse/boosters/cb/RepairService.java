@@ -5,13 +5,13 @@ package com.redhat.fuse.boosters.cb;
  * Service interface for name service.
  * 
  */
-public interface NameService {
+public interface RepairService {
 
     /**
      * Generate Name
      *
      * @return a string name
      */
-    Name getName(String name);
+    Repair getRepair(String repairInfo);
 
 }

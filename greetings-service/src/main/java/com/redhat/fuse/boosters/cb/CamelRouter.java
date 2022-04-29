@@ -37,20 +37,6 @@ public class CamelRouter extends RouteBuilder {
             // Message has headers and other magic that Camel can do
                 .responseMessage().code(200).endResponseMessage()
                 .to("direct:greetingsImpl");
-
-        // from("direct:greetingsImpl")            
-        //     .description("Greetings REST service implementation route")
-        //     .streamCaching()
-        //     // see application.properties how hystrix is configured
-        //     .log(" Try to call name Service")
-        //     .log("Received Body: ${body}")
-        //     .log("name header object: ${header.name}")
-        //     .removeHeaders("CamelHttp*")
-        //     .setHeader(HTTP_QUERY, simple("name=${header.name}"))
-        //     .to("http://"+nameServiceHost+":"+nameServicePort+"/camel/name/?bridgeEndpoint=true")
-        //     .log(" Successfully called name Service")
-        //     .to("bean:greetingsService?method=getGreetings");  
-            
             
             from("direct:greetingsImpl")
                 .streamCaching()
