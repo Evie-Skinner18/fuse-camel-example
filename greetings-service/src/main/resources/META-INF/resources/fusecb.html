@@ -62,9 +62,6 @@ service is running.</p>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
         $(document).ready(function() {
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
 
             async function callGreetingsService() {
 				const nameInput = $("#name");
@@ -73,10 +70,14 @@ service is running.</p>
 				const nameValue = nameInput.val();
 				const addressValue = addressInput.val();
 
-				console.log(nameValue);
-				console.log(addressValue);
+				const nameAndAddressObject = {
+					name: `${nameValue}`,
+					address: `${addressValue}`
+				}
 
-				$.getJSON(`/camel/greetings/${nameValue}/${addressValue}`, function (res) {
+				const jsonNameAndAddress = JSON.stringify(nameAndAddressObject);
+
+				$.getJSON(`/camel/greetings/${jsonNameAndAddress}`, function (res) {
 					$("#greetings-result").prepend(JSON.stringify(res) + "\n");
 				});
 

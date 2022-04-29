@@ -20,10 +20,11 @@ public class CamelRouter extends RouteBuilder {
             .component("servlet")
             .bindingMode(RestBindingMode.json);
         
-        rest("/name/{name}").description("Name REST service")
+        rest("/name").description("Name REST service")
             .consumes("application/json")
             .produces("application/json")
 
+            // tweak so this returns a List<Name>
             .get().description("Generate a Name").outType(Name.class)
                 .responseMessage().code(200).endResponseMessage()
                 .to("bean:nameService?method=getName(${header.name})");
