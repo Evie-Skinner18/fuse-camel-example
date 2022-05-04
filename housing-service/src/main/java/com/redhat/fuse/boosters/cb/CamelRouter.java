@@ -43,7 +43,10 @@ public class CamelRouter extends RouteBuilder {
                 .removeHeaders("Camel*") // if not remove camel headers it rewrites the url
                 .setHeader(HTTP_QUERY, simple("repairInfo=${header.repairInfo}"))
                 .log("repairInfo=${header.repairInfo}")
-                .to("http://localhost:8081/camel/repairs?bridgeEndpoint=true")
+                // instead of marshall/unmarshall xml to JAva bean
+                // invoke a bean method here that returns a Repair object
+                // Repair object has properties that mirror what comes back from MDM
+                .to("bean:housingService?method=getRepairFromXml(${header.repairInfo})")
                 .to("bean:housingService?method=getHousingResponse");
     }
 

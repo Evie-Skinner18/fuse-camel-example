@@ -1,9 +1,5 @@
 package com.redhat.fuse.boosters.cb;
 
-/**
- * Greetings entity
- *
- */
 public class HousingResponse {
 
     private String housingMessage;
