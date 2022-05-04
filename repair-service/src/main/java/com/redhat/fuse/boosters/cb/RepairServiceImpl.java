@@ -11,11 +11,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 @Service("repairService")
 public class RepairServiceImpl implements RepairService {
 
-    // get xml
-    // serialise it into a Repair bean
     @Override
     public Repair getRepair(@Header("repairInfo") String repairInfo) {
         return new Repair(repairInfo);
+    }
+
+    @Override
+    public Resident getResident(@Header("residentInfo") String residentInfo) {
+        return new Resident(residentInfo);
     }
 
 }

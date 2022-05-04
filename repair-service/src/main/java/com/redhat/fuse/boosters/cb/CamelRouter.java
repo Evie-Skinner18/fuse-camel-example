@@ -23,10 +23,13 @@ public class CamelRouter extends RouteBuilder {
             .consumes("application/json")
             .produces("application/json")
 
-            // tweak so this returns a List<Name>
             .get().description("Raise a repair").outType(Repair.class)
                 .responseMessage().code(200).endResponseMessage()
-                .to("bean:repairService?method=getRepair(${header.repairInfo})");
+                .to("bean:repairService?method=getRepair(${header.repairInfo})")
+            
+            .get("/residents").description("Search for a resident").outType(Resident.class)
+                .responseMessage().code(200).endResponseMessage()
+                .to("bean:repairService?method=getResident(${header.residentInfo})");
         // @formatter:on
     }
 
