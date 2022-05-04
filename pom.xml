@@ -96,8 +96,8 @@
     </pluginRepository>
   </pluginRepositories>
   <modules>
-    <module>name-service</module>
-    <module>greetings-service</module>
+    <module>repair-service</module>
+    <module>housing-service</module>
     <module>itest</module>
   </modules>
 </project>

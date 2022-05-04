@@ -26,7 +26,7 @@ public class CamelRouter extends RouteBuilder {
             // tweak so this returns a List<Name>
             .get().description("Raise a repair").outType(Repair.class)
                 .responseMessage().code(200).endResponseMessage()
-                .to("bean:repairService?method=getRepairInfo(${header.name})");
+                .to("bean:repairService?method=getRepair(${header.repairInfo})");
         // @formatter:on
     }
 

@@ -44,14 +44,14 @@ objects:
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: greetings-service-config
+    name: housing-service-config
   data:
     application.properties: |-
       server.port=8080
       management.endpoints.web.base-path=/
 
-      nameService.host=${NAME_SERVICE_SERVICE_HOST}
-      nameService.port=${NAME_SERVICE_SERVICE_PORT}
+      repairService.host=${NAME_SERVICE_SERVICE_HOST}
+      repairService.port=${NAME_SERVICE_SERVICE_PORT}
 
       # configure hystrix
       # when we have more than 5 requests per 10 seconds that 50%+ fails
@@ -90,21 +90,21 @@ objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: greetings-service
+    name: housing-service
   spec: {}
 - apiVersion: v1
   kind: BuildConfig
   metadata:
-    name: greetings-service
+    name: housing-service
     labels:
-      app: fuse-circuit-breaker-mission-greetings-service
+      app: fuse-circuit-breaker-mission-housing-service
       group: com.redhat.fuse.boosters
       provider: jkube
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: greetings-service:latest
+        name: housing-service:latest
     postCommit: {}
     resources: {}
     runPolicy: Serial
@@ -150,10 +150,10 @@ objects:
       prometheus.io/scrape: "true"
     labels:
       expose: "true"
-      app: fuse-circuit-breaker-mission-greetings-service
+      app: fuse-circuit-breaker-mission-housing-service
       provider: jkube
       group: com.redhat.fuse.boosters
-    name: greetings-service
+    name: housing-service
   spec:
     ports:
     - name: http
@@ -161,22 +161,22 @@ objects:
       protocol: TCP
       targetPort: 8080
     selector:
-      app: fuse-circuit-breaker-mission-greetings-service
+      app: fuse-circuit-breaker-mission-housing-service
       provider: jkube
       group: com.redhat.fuse.boosters
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      app: fuse-circuit-breaker-mission-greetings-service
+      app: fuse-circuit-breaker-mission-housing-service
       provider: jkube
       group: com.redhat.fuse.boosters
-    name: greetings-service
+    name: housing-service
   spec:
     replicas: 1
     revisionHistoryLimit: 2
     selector:
-      app: fuse-circuit-breaker-mission-greetings-service
+      app: fuse-circuit-breaker-mission-housing-service
       provider: jkube
       group: com.redhat.fuse.boosters
     strategy:
@@ -186,21 +186,21 @@ objects:
     template:
       metadata:
         labels:
-          app: fuse-circuit-breaker-mission-greetings-service
+          app: fuse-circuit-breaker-mission-housing-service
           provider: jkube
           group: com.redhat.fuse.boosters
       spec:
         volumes:
         - name: config-volume
           configMap:
-            name: greetings-service-config
+            name: housing-service-config
         containers:
         - env:
           - name: KUBERNETES_NAMESPACE
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          image: greetings-service:latest
+          image: housing-service:latest
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
@@ -208,7 +208,7 @@ objects:
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 180
-          name: greetings-service
+          name: housing-service
           volumeMounts:
             - name: config-volume
               mountPath: /deployments/application.properties
@@ -236,22 +236,22 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - greetings-service
+        - housing-service
         from:
           kind: ImageStreamTag
-          name: greetings-service:latest
+          name: housing-service:latest
       type: ImageChange
 - apiVersion: v1
   kind: Route
   metadata:
     labels:
-      app: fuse-circuit-breaker-mission-greetings-service
+      app: fuse-circuit-breaker-mission-housing-service
       provider: jkube
       group: com.redhat.fuse.boosters
-    name: greetings-service
+    name: housing-service
   spec:
     port:
       targetPort: 8080
     to:
       kind: Service
-      name: greetings-service
+      name: housing-service

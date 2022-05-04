@@ -2,15 +2,15 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   labels:
-    app: greetings-service
+    app: housing-service
     provider: jkube
     group: ${project.groupId}
-  name: greetings-service
+  name: housing-service
 spec:
   replicas: 1
   revisionHistoryLimit: 2
   selector:
-    app: greetings-service
+    app: housing-service
     provider: jkube
     group: ${project.groupId}
   strategy:
@@ -20,16 +20,16 @@ spec:
   template:
     metadata:
       labels:
-        app: greetings-service
+        app: housing-service
         provider: jkube
         group: ${project.groupId}
     spec:
       volumes:
       - name: config-volume
         configMap:
-          name: greetings-service
+          name: housing-service
       containers:
-      - name: greetings-service
+      - name: housing-service
         volumeMounts:
           - name: config-volume
             mountPath: /deployments/application.properties
@@ -39,8 +39,8 @@ spec:
   - imageChangeParams:
       automatic: true
       containerNames:
-      - greetings-service
+      - housing-service
       from:
         kind: ImageStreamTag
-        name: greetings-service:${project.version}
+        name: housing-service:${project.version}
     type: ImageChange

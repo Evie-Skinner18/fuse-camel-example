@@ -28,7 +28,7 @@ public class CamelRouter extends RouteBuilder {
             .component("servlet")
             .bindingMode(RestBindingMode.json);
         
-        rest("/housing/{name}").description("Housing REST service")
+        rest("/housing/{repairInfo}").description("Housing REST service")
             .consumes("application/json")
             .produces("application/json")
 
@@ -41,9 +41,9 @@ public class CamelRouter extends RouteBuilder {
             from("direct:housingImpl")
                 .streamCaching()
                 .removeHeaders("Camel*") // if not remove camel headers it rewrites the url
-                .setHeader(HTTP_QUERY, simple("name=${header.name}"))
-                .log("name=${header.name}")
-                .to("http://localhost:8081/camel/name?bridgeEndpoint=true")
+                .setHeader(HTTP_QUERY, simple("repairInfo=${header.repairInfo}"))
+                .log("repairInfo=${header.repairInfo}")
+                .to("http://localhost:8081/camel/repairs?bridgeEndpoint=true")
                 .to("bean:housingService?method=getHousingResponse");
     }
 

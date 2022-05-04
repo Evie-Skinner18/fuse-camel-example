@@ -9,8 +9,8 @@ public class HousingServiceImpl implements HousingService {
     private static String THE_HOUSING_RESPONSE = "We have raised a repair for:";
 
     @Override   
-    public HousingResponse getHousingResponse( @JsonPath("$.name") String name) {
-        String housingResponse = THE_HOUSING_RESPONSE + " " + name;
+    public HousingResponse getHousingResponse( @JsonPath("$.repairInfo") String repairInfo) {
+        String housingResponse = THE_HOUSING_RESPONSE + " " + repairInfo;
 
         return new HousingResponse(housingResponse);
     }

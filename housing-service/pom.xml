@@ -6,8 +6,8 @@
     <artifactId>careless-thumb</artifactId>
     <version>1.0.0</version>
   </parent>
-  <artifactId>greetings-service</artifactId>
-  <name>Fuse :: Boosters :: Springboot :: Circuit Breaker :: Greetings service</name>
+  <artifactId>housing-service</artifactId>
+  <name>Fuse :: Boosters :: Springboot :: Circuit Breaker :: Housing service</name>
   <dependencies>
     <!-- spring-boot -->
     <dependency>

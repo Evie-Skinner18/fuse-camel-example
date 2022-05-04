@@ -41,14 +41,14 @@
 				const nameValue = nameInput.val();
 				const addressValue = addressInput.val();
 
-				const nameAndAddressObject = {
+				const repairInfoObject = {
 					name: `${nameValue}`,
 					address: `${addressValue}`
 				}
 
-				const jsonNameAndAddress = JSON.stringify(nameAndAddressObject);
+				const jsonRepairInfo = JSON.stringify(repairInfoObject);
 
-				$.getJSON(`/camel/housing/${jsonNameAndAddress}`, function (res) {
+				$.getJSON(`/camel/housing/${jsonRepairInfo}`, function (res) {
 					$("#housing-result").prepend(JSON.stringify(res) + "\n");
 				});
 

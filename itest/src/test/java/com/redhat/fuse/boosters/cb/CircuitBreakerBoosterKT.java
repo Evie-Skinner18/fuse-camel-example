@@ -26,7 +26,7 @@ public class CircuitBreakerBoosterKT {
             {put("SOURCE_REPOSITORY_URL","https://github.com/jboss-fuse/fuse-springboot-circuit-breaker-booster");}
         };
 
-        File template = new File("../greetings-service/.openshiftio/application.yaml");
+        File template = new File("../housing-service/.openshiftio/application.yaml");
         assertTrue(template.exists());
         List<HasMetadata> resources = client.templates().load(template).process(templateParameters).getItems();
 
@@ -34,7 +34,7 @@ public class CircuitBreakerBoosterKT {
             client.resource(res).createOrReplace();
         }
 
-        File template2 = new File("../name-service/.openshiftio/application.yaml");
+        File template2 = new File("../repair-service/.openshiftio/application.yaml");
         assertTrue(template2.exists());
         List<HasMetadata> resources2 = client.templates().load(template2).process(templateParameters).getItems();
 
