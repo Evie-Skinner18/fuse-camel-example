@@ -10,17 +10,21 @@
 </head>
 <body>
 	<div class="container">
-
-	<div>
 		<h1>Camden Borough Council - Raise a Repair</h1>
+	<div id="find-an-address-section">
+
+	</div>
+	<div id="find-a-resident-section">
+		<h2>Find a resident</h2>
 		<p class="lead">
-			Fill out the form below to request a repair for your property.
+			Fill out the form below to find a resident
 		</p>
 		<div class="row">
-			<form class="form-inline" id="raise-a-repair-form">
-				<input id="name" type="text" placeholder="Enter your first name" class=""/>
-				<input id="address" type="text" placeholder="Enter your address" class=""/>
-				<button id="raise-a-repair-button" class="btn btn-primary">Raise a repair</button>
+			<form class="form-inline" id="find-a-resident-form">
+				<input id="first-name" type="text" placeholder="Enter your first name" class=""/>
+				<input id="surname" type="text" placeholder="Enter your surname" class=""/>
+				<input id="uprn" type="text" placeholder="Enter the UPRN" class=""/>
+				<button id="find-a-resident-button" class="btn btn-primary">Find a resident</button>
 			</form>
 		</div>
 
@@ -35,25 +39,29 @@
         $(document).ready(function() {
 
             async function callHousingService() {
-				const nameInput = $("#name");
-				const addressInput = $("#address");
+				const firstNameInput = $("#first-name");
+				const surnameInput = $("#surname");
+				const uprnInput = $("#uprn");
 
-				const nameValue = nameInput.val();
-				const addressValue = addressInput.val();
+				const firstNameValue = firstNameInput.val();
+				const surnameValue = surnameInput.val();
+				const uprnValue = uprnInput.val();
 
-				const repairInfoObject = {
-					name: `${nameValue}`,
-					address: `${addressValue}`
+				const residentInfoObject = {
+					firstName: `${firstNameValue}`,
+					surname: `${surnameValue}`,
+					uprn: `${uprnValue}`
 				}
 
-				const jsonRepairInfo = JSON.stringify(repairInfoObject);
+				const jsonResidentInfo = JSON.stringify(residentInfoObject);
 
-				$.getJSON(`/camel/housing/${jsonRepairInfo}`, function (res) {
+				$.getJSON(`/camel/housing/${jsonResidentInfo}`, function (res) {
+					console.log(res);
 					$("#housing-result").prepend(JSON.stringify(res) + "\n");
 				});
 
             }
-            $("#raise-a-repair-button").click(async function(e) {
+            $("#find-a-resident-button").click(async function(e) {
 				e.preventDefault();
                 callHousingService();
             });

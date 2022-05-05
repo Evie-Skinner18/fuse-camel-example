@@ -10,10 +10,26 @@ public class Resident {
     public Resident() {
     }
 
+    public String getPartyReference() {
+        return partyReference;
+    }
+
+    public void setPartyReference(String partyReference) {
+        this.partyReference = partyReference;
+    }   
+
+    public String getNorthgatePropertyNumber() {
+        return northgatePropertyNumber;
+    }
+
+    public void setNorthgatePropertyNumber(String northgatePropertyNumber) {
+        this.northgatePropertyNumber = northgatePropertyNumber;
+    }
+
     public Resident(String residentInfo) {
-        this.residentInfo = residentInfo;
-        this.northgatePropertyNumber = "45966";
-        this.partyReference = "18hh3h4rn";
+        this.setResidentInfo(residentInfo);
+        this.setNorthgatePropertyNumber("45966");
+        this.setPartyReference("18hh3h4rn");
     }
 
     public String getResidentInfo() {

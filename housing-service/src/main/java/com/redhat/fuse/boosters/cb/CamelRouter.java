@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import static org.apache.camel.Exchange.HTTP_QUERY;
 
-/**
- * A simple Camel REST DSL route that implement the greetings service.
- * 
- */
+
 @Component
 public class CamelRouter extends RouteBuilder {
 
@@ -28,7 +25,7 @@ public class CamelRouter extends RouteBuilder {
             .component("servlet")
             .bindingMode(RestBindingMode.json);
         
-        rest("/housing/{repairInfo}").description("Housing REST service")
+        rest("/housing/{residentInfo}").description("Housing REST service")
             .consumes("application/json")
             .produces("application/json")
 
@@ -40,13 +37,10 @@ public class CamelRouter extends RouteBuilder {
             
             from("direct:housingImpl")
                 .streamCaching()
-                .removeHeaders("Camel*") // if not remove camel headers it rewrites the url
-                .setHeader(HTTP_QUERY, simple("repairInfo=${header.repairInfo}"))
-                .log("repairInfo=${header.repairInfo}")
-                // instead of marshall/unmarshall xml to JAva bean
-                // invoke a bean method here that returns a Repair object
-                // Repair object has properties that mirror what comes back from MDM
-                .to("bean:housingService?method=getRepairFromXml(${header.repairInfo})")
+                .removeHeaders("Camel*") // if we do not remove camel headers it rewrites the url
+                .setHeader(HTTP_QUERY, simple("residentInfo=${header.residentInfo}"))
+                .log("residentInfo=${header.residentInfo}")
+                .to("http://localhost:8081/camel/repairs/residents?bridgeEndpoint=true")
                 .to("bean:housingService?method=getHousingResponse");
     }
 
