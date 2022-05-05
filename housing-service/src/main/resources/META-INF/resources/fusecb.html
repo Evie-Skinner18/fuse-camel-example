@@ -48,7 +48,7 @@
 		</div>
 		<div class="row">
 			<h3>Results:</h3>
-			<pre style="min-height:20em;"><code id="housing-result"></code></pre>
+			<div id="housing-result" style="min-height:20em;"></div>
 		</div>
 	</div>
 	<div id="raise-a-repair-section">
@@ -66,6 +66,7 @@
 			findAResidentSection.hide();
 			raiseARepairButton.hide();
 
+									// abstract into separate function
 			IdealPostcodes.AddressFinder.setup({
 				apiKey: "ak_l2sxknjt5J2bI04h1jkzhYDrw6e4l",
 				inputField: "#postcode-input",
@@ -80,6 +81,7 @@
 			});
 
 			$("#postcode").change((event) => {
+										// abstract into separate function
 				const firstLineOfAddressValue = $("#first_line").val();
 
 				if (firstLineOfAddressValue) {
@@ -94,6 +96,7 @@
             });
 
 			async function callHousingService() {
+										// abstract into separate function
 				const firstNameInput = $("#first-name");
 				const surnameInput = $("#surname");
 				const uprnInput = $("#uprn");
@@ -111,9 +114,21 @@
 				const jsonResidentInfo = JSON.stringify(residentInfoObject);
 
 				$.getJSON(`/camel/housing/${jsonResidentInfo}`, function (res) {
-					$("#housing-result").prepend(JSON.stringify(res) + "\n");
-				});
+					if (res) {
+						// abstract into separate function
+						const housingMessage = res.housingMessage;
+						const residentName = housingMessage.residentInfo.firstName;
+						const northgatePropertyNumber = housingMessage.northgatePropertyNumber;
+						const partyReference = housingMessage.partyReference;
 
+						const findAResidentMessage = `<p>We have found a resident matching those details.</p>
+							<p>Name: ${residentName}</p>
+							<p>Northgate propeerty reference: ${northgatePropertyNumber}</p>
+							<p>Party reference: ${partyReference}</p>`;
+						
+						$("#housing-result").replaceWith(findAResidentMessage);
+					}
+				});
             }
 
 			function setupRaiseARepairButton(showButton) {
