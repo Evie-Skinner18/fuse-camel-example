@@ -52,15 +52,17 @@
 		</div>
 	</div>
 	<div id="raise-a-repair-section">
-		<h2>Raise a repair</h2>
-		<button class="btn-success">
-			Click to raise a repair for <span id="resident-name"></span> at <span id="first_line"></span>
+		<button class="btn-success" id="raise-a-repair-button">
+			Click to raise a repair for <span id="resident-name"></span> at <span id="address-first-line"></span>
 		</button>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/@ideal-postcodes/address-finder-bundled@4"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
         $(document).ready(function() {
+			const raiseARepairButton = $("#raise-a-repair-button");
+			raiseARepairButton.hide();
+
 			IdealPostcodes.AddressFinder.setup({
 				apiKey: "ak_l2sxknjt5J2bI04h1jkzhYDrw6e4l",
 				inputField: "#postcode-input",
@@ -92,7 +94,6 @@
 				const jsonResidentInfo = JSON.stringify(residentInfoObject);
 
 				$.getJSON(`/camel/housing/${jsonResidentInfo}`, function (res) {
-					console.log(res);
 					$("#housing-result").prepend(JSON.stringify(res) + "\n");
 				});
 
@@ -100,7 +101,25 @@
             $("#find-a-resident-button").click(async function(e) {
 				e.preventDefault();
                 callHousingService();
+				setupRaiseARepairButton(true);
             });
+
+			function setupRaiseARepairButton(showButton) {
+				const raiseARepairButton = $("#raise-a-repair-button");
+
+				const residentFirstNameValue = $("#first-name").val();
+				const addressFirstLineValue = $("#first_line").val();
+
+				const residentNameInsideRaiseARepairButton = $("#resident-name");
+				const addressInsideRaiseARepairButton = $("#address-first-line");
+
+				residentNameInsideRaiseARepairButton.replaceWith(`<span id="resident-name">${residentFirstNameValue}</span>`);
+				addressInsideRaiseARepairButton.replaceWith(`<span id="address-first-line">${addressFirstLineValue}</span>`);
+
+				if (showButton) {
+					raiseARepairButton.show();
+				}
+			}
         });
 	</script>
 </div>
