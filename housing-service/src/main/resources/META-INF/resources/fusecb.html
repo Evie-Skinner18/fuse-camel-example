@@ -12,7 +12,26 @@
 	<div class="container">
 		<h1>Camden Borough Council - Raise a Repair</h1>
 	<div id="find-an-address-section">
-
+		<h2>Find an address</h2>
+		<p class="lead">
+			Fill out the form below to find an address
+		</p>
+		<div class="row">
+			<form class="form-group" id="find-an-address-form">
+				<input class="form-control" id="postcode-input" type="text" placeholder="Enter a postcode" />
+				<br />
+				<label>Address Line One</label>
+				<input class="form-control" id="first_line" type="text">
+				<label>Address Line Two</label>
+				<input class="form-control" id="second_line" type="text">
+				<label>Address Line Three</label>
+				<input class="form-control" id="third_line" type="text">
+				<label>Post Town</label>
+				<input class="form-control" id="post_town" type="text">
+				<label>Postcode</label>
+				<input class="form-control" id="postcode" type="text">
+			</form>
+		</div>
 	</div>
 	<div id="find-a-resident-section">
 		<h2>Find a resident</h2>
@@ -21,22 +40,39 @@
 		</p>
 		<div class="row">
 			<form class="form-inline" id="find-a-resident-form">
-				<input id="first-name" type="text" placeholder="Enter your first name" class=""/>
-				<input id="surname" type="text" placeholder="Enter your surname" class=""/>
-				<input id="uprn" type="text" placeholder="Enter the UPRN" class=""/>
+				<input id="first-name" type="text" placeholder="Enter first name" class=""/>
+				<input id="surname" type="text" placeholder="Enter surname" class=""/>
+				<input id="uprn" type="text" placeholder="UPRN from address" class=""/>
 				<button id="find-a-resident-button" class="btn btn-primary">Find a resident</button>
 			</form>
 		</div>
-
 		<div class="row">
 			<h3>Results:</h3>
 			<pre style="min-height:20em;"><code id="housing-result"></code></pre>
 		</div>
-
 	</div>
+	<div id="raise-a-repair-section">
+		<h2>Raise a repair</h2>
+		<button class="btn-success">
+			Click to raise a repair for <span id="resident-name"></span> at <span id="first_line"></span>
+		</button>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/@ideal-postcodes/address-finder-bundled@4"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
         $(document).ready(function() {
+			IdealPostcodes.AddressFinder.setup({
+				apiKey: "ak_l2sxknjt5J2bI04h1jkzhYDrw6e4l",
+				inputField: "#postcode-input",
+				outputFields: {
+					line_1: "#first_line",
+					line_2: "#second_line",
+					line_3: "#third_line",
+					post_town: "#post_town",
+					postcode: "#postcode",
+					uprn: "#uprn"
+				}
+			});
 
             async function callHousingService() {
 				const firstNameInput = $("#first-name");

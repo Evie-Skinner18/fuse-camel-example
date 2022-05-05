@@ -34,7 +34,7 @@ public class CamelRouter extends RouteBuilder {
             // Message has headers and other magic that Camel can do
                 .responseMessage().code(200).endResponseMessage()
                 .to("direct:housingImpl");
-            
+                        
             from("direct:housingImpl")
                 .streamCaching()
                 .removeHeaders("Camel*") // if we do not remove camel headers it rewrites the url

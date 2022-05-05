@@ -29,7 +29,7 @@ public class CamelRouter extends RouteBuilder {
             
             .get("/residents").description("Search for a resident").outType(Resident.class)
                 .responseMessage().code(200).endResponseMessage()
-                .to("bean:repairService?method=getResident(${header.residentInfo})");
+                .to("bean:repairService?method=getResident(${header.residentInfo})");    
         // @formatter:on
     }
 
