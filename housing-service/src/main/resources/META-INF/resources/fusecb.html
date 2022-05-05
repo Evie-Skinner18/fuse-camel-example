@@ -60,7 +60,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
         $(document).ready(function() {
+			const findAResidentSection = $("#find-a-resident-section");
 			const raiseARepairButton = $("#raise-a-repair-button");
+
+			findAResidentSection.hide();
 			raiseARepairButton.hide();
 
 			IdealPostcodes.AddressFinder.setup({
@@ -76,7 +79,21 @@
 				}
 			});
 
-            async function callHousingService() {
+			$("#postcode").change((event) => {
+				const firstLineOfAddressValue = $("#first_line").val();
+
+				if (firstLineOfAddressValue) {
+					findAResidentSection.show();
+				}
+			});
+            
+            $("#find-a-resident-button").click(async function(e) {
+				e.preventDefault();
+                callHousingService();
+				setupRaiseARepairButton(true);
+            });
+
+			async function callHousingService() {
 				const firstNameInput = $("#first-name");
 				const surnameInput = $("#surname");
 				const uprnInput = $("#uprn");
@@ -98,11 +115,6 @@
 				});
 
             }
-            $("#find-a-resident-button").click(async function(e) {
-				e.preventDefault();
-                callHousingService();
-				setupRaiseARepairButton(true);
-            });
 
 			function setupRaiseARepairButton(showButton) {
 				const raiseARepairButton = $("#raise-a-repair-button");
