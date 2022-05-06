@@ -5,6 +5,7 @@ public class ResidentInfo {
     public String surname;
     public String uprn;
     public boolean isValidResident;
+    public String nameNearlyMatchingFirstName;
 
     public ResidentInfo() {
     }

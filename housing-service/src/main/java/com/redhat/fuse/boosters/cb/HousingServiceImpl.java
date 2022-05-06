@@ -17,9 +17,13 @@ public class HousingServiceImpl implements HousingService {
             partyReference);
         
         String name = housingMessage.residentInfo.firstName.trim().toLowerCase();
-        boolean residentIsCalledBarry = name.equals("barry");
-        boolean isValidResident = !residentIsCalledBarry;
-        housingMessage.residentInfo.isValidResident = isValidResident;    
+        boolean isValidResident = !name.equals("barry");
+        housingMessage.residentInfo.isValidResident = isValidResident; 
+        
+        if (name.equals("jim")) {
+            housingMessage.residentInfo.nameNearlyMatchingFirstName = "James";
+            housingMessage.residentInfo.isValidResident = false;
+        }
 
         return new HousingResponse(housingMessage);
     }

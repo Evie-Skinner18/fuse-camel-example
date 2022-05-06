@@ -124,12 +124,9 @@
 						const housingMessage = res.housingMessage;
 						const residentName = housingMessage.residentInfo.firstName;
 						const isValidResident = housingMessage.residentInfo.isValidResident;
+						const nameNearlyMatchingFirstName = housingMessage.residentInfo.nameNearlyMatchingFirstName;
 						const northgatePropertyNumber = housingMessage.northgatePropertyNumber;
 						const partyReference = housingMessage.partyReference;
-
-						console.log(`valid user: ${isValidResident}`);
-						console.log(`name: ${residentName}`);
-
 
 						const findAResidentMessage = isValidResident? 
 							`<div id='housing-result'>
@@ -143,34 +140,50 @@
 						
 						$("#housing-result").replaceWith(findAResidentMessage);
 
-						showNextStepByResidentValidity(isValidResident);
+						showNextStepByResidentValidity(isValidResident, nameNearlyMatchingFirstName);
 					}
 				});
             }
 
-			function showNextStepByResidentValidity(isValidResident) {
-				isValidResident? showRaiseARepairButton() : showErrorMessage();
+			function showNextStepByResidentValidity(isValidResident, nameNearlyMatchingFirstName) {
+				if (nameNearlyMatchingFirstName) {
+					showErrorMessage(nameNearlyMatchingFirstName);
+				} else {
+					isValidResident? showRaiseARepairButton() : showErrorMessage();
+				}
 			}
 
 			// not very dry
-			function showErrorMessage() {
+			function showErrorMessage(nameNearlyMatchingFirstName) {
 				raiseARepairButton.hide();
 
 				const errorMessage = $("#error-message");
 
 				const residentFirstNameValue = $("#first-name").val();
+				const residentSurnameValue = $("#surname").val();
 				const addressFirstLineValue = $("#first_line").val();
 
-				const residentFirsNameInsideErrorMessage = $("#error-resident-name");
-				const residentAddressInsideErrorMessage = $("#error-address-first-line");
-
-				residentFirsNameInsideErrorMessage.replaceWith(`<span id="error-resident-name">${residentFirstNameValue}</span>`);
-				residentAddressInsideErrorMessage.replaceWith(`<span id="error-address-first-line">${addressFirstLineValue}</span>`);
+				if (nameNearlyMatchingFirstName) {
+					errorMessage.replaceWith(
+						`<div class='alert alert-warning' id='error-message'>
+							We couldn't find a resident named ${residentFirstNameValue} ${residentSurnameValue} at ${addressFirstLineValue}. 
+							Did you mean ${nameNearlyMatchingFirstName}?
+						</div>`
+						);
+				} else {
+					errorMessage.replaceWith(
+						`<div class='alert alert-danger' id='error-message'>
+							We couldn't find a resident named ${residentFirstNameValue} ${residentSurnameValue} at ${addressFirstLineValue}.
+							Please phone us to raise your repair:  <strong>020 7974 4444</strong>
+						</div>`
+						);
+				}
 
 				errorMessage.show();
 			}
 
 			function showRaiseARepairButton() {
+				const errorMessage = $("#error-message");
 				errorMessage.hide();
 				
 				const raiseARepairButton = $("#raise-a-repair-button");
