@@ -6,14 +6,10 @@ COPY . /project
 WORKDIR /project
 RUN mvn clean package -DskipTests
 
-FROM adoptopenjdk/openjdk11:jre-11.0.9.1_1-alpine@sha256:b6ab039066382d39cfc843914ef1fc624aa60e2a16ede433509ccadd6d995b1f
-RUN apk add dumb-init
+FROM adoptopenjdk/openjdk11:ppc64le-ubi-minimal-jre-11.0.15_10@sha256:229b75b85147c84402cb6c6b08f38be61acf1ab3daf693e9ea2be5810fb65a4a
 RUN mkdir /app
-RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
 COPY --from=build /project/housing-service/target/housing-service-1.0.0.jar /app/housing-service.jar
 COPY --from=build /project/repair-service/target/repair-service-1.0.0.jar /app/repair-service.jar
 WORKDIR /app
-RUN chown -R javauser:javauser /app
-USER javauser
 EXPOSE 8080
-CMD dumb-init java -jar repair-service.jar && sleep 5 && java -jar repair-service.jar 
+CMD java -jar housing-service.jar && sleep 5 && java -jar repair-service.jar 
