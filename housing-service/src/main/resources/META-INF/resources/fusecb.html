@@ -52,6 +52,10 @@
 		</div>
 	</div>
 	<div id="raise-a-repair-section">
+		<div class="alert alert-danger" id="error-message">
+			Sorry but we couldn't find a resident named <span id="error-resident-name"></span> at <span id="error-address-first-line"></span>.
+			Please phone us to raise your repair:  <strong>020 7974 4444</strong>
+		</div>
 		<button class="btn-success" id="raise-a-repair-button">
 			Click to raise a repair for <span id="resident-name"></span> at <span id="address-first-line"></span>
 		</button>
@@ -61,9 +65,11 @@
 	<script>
         $(document).ready(function() {
 			const findAResidentSection = $("#find-a-resident-section");
+			const errorMessage = $("#error-message");
 			const raiseARepairButton = $("#raise-a-repair-button");
 
 			findAResidentSection.hide();
+			errorMessage.hide();
 			raiseARepairButton.hide();
 
 									// abstract into separate function
@@ -92,7 +98,6 @@
             $("#find-a-resident-button").click(async function(e) {
 				e.preventDefault();
                 callHousingService();
-				setupRaiseARepairButton(true);
             });
 
 			async function callHousingService() {
@@ -118,20 +123,56 @@
 						// abstract into separate function
 						const housingMessage = res.housingMessage;
 						const residentName = housingMessage.residentInfo.firstName;
+						const isValidResident = housingMessage.residentInfo.isValidResident;
 						const northgatePropertyNumber = housingMessage.northgatePropertyNumber;
 						const partyReference = housingMessage.partyReference;
 
-						const findAResidentMessage = `<p>We have found a resident matching those details.</p>
-							<p>Name: ${residentName}</p>
-							<p>Northgate propeerty reference: ${northgatePropertyNumber}</p>
-							<p>Party reference: ${partyReference}</p>`;
+						console.log(`valid user: ${isValidResident}`);
+						console.log(`name: ${residentName}`);
+
+
+						const findAResidentMessage = isValidResident? 
+							`<div id='housing-result'>
+								<p>We have found a resident matching those details.</p>
+								<p>Name: ${residentName}</p>
+								<p>Northgate property reference: ${northgatePropertyNumber}</p>
+								<p>Party reference: ${partyReference}</p>
+							</div>`
+							:
+							"<div id='housing-result'></div>";
 						
 						$("#housing-result").replaceWith(findAResidentMessage);
+
+						showNextStepByResidentValidity(isValidResident);
 					}
 				});
             }
 
-			function setupRaiseARepairButton(showButton) {
+			function showNextStepByResidentValidity(isValidResident) {
+				isValidResident? showRaiseARepairButton() : showErrorMessage();
+			}
+
+			// not very dry
+			function showErrorMessage() {
+				raiseARepairButton.hide();
+
+				const errorMessage = $("#error-message");
+
+				const residentFirstNameValue = $("#first-name").val();
+				const addressFirstLineValue = $("#first_line").val();
+
+				const residentFirsNameInsideErrorMessage = $("#error-resident-name");
+				const residentAddressInsideErrorMessage = $("#error-address-first-line");
+
+				residentFirsNameInsideErrorMessage.replaceWith(`<span id="error-resident-name">${residentFirstNameValue}</span>`);
+				residentAddressInsideErrorMessage.replaceWith(`<span id="error-address-first-line">${addressFirstLineValue}</span>`);
+
+				errorMessage.show();
+			}
+
+			function showRaiseARepairButton() {
+				errorMessage.hide();
+				
 				const raiseARepairButton = $("#raise-a-repair-button");
 
 				const residentFirstNameValue = $("#first-name").val();
@@ -142,10 +183,8 @@
 
 				residentNameInsideRaiseARepairButton.replaceWith(`<span id="resident-name">${residentFirstNameValue}</span>`);
 				addressInsideRaiseARepairButton.replaceWith(`<span id="address-first-line">${addressFirstLineValue}</span>`);
-
-				if (showButton) {
-					raiseARepairButton.show();
-				}
+				
+				raiseARepairButton.show();
 			}
         });
 	</script>

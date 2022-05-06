@@ -15,6 +15,11 @@ public class HousingServiceImpl implements HousingService {
         HousingMessage housingMessage = new HousingMessage(residentInfo, 
             northgatePropertyNumber, 
             partyReference);
+        
+        String name = housingMessage.residentInfo.firstName.trim().toLowerCase();
+        boolean residentIsCalledBarry = name.equals("barry");
+        boolean isValidResident = !residentIsCalledBarry;
+        housingMessage.residentInfo.isValidResident = isValidResident;    
 
         return new HousingResponse(housingMessage);
     }
