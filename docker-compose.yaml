@@ -6,16 +6,16 @@ services:
       container_name: repair-service
       networks:
          - micro-service-network
-      expose:
-        - "8081"
+      ports:
+        - "8081:8081"
          
    housing-service:
       image: housing-service
       container_name: housing-service
       networks:
          - micro-service-network
-      expose:
-         - "8080"
+      ports:
+         - "8080:8080"
       environment:
          WAIT_HOSTS: repair-service:8081
 
