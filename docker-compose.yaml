@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+   repair-service:
+      image: repair-service
+      container_name: repair-service
+      networks:
+         - micro-service-network
+      expose:
+        - "8081"
+         
+   housing-service:
+      image: housing-service
+      container_name: housing-service
+      networks:
+         - micro-service-network
+      expose:
+         - "8080"
+      environment:
+         WAIT_HOSTS: repair-service:8081
+
+networks:
+    micro-service-network:
