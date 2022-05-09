@@ -6,8 +6,7 @@ COPY . /project
 WORKDIR /project
 RUN mvn clean package -DskipTests
 
-# FROM adoptopenjdk/openjdk11:ppc64le-ubi-minimal-jre-11.0.15_10@sha256:229b75b85147c84402cb6c6b08f38be61acf1ab3daf693e9ea2be5810fb65a4a
-FROM adoptopenjdk:11-jre-hotspot
+FROM adoptopenjdk:11-jre-hotspott@sha256:ad6431b2e2a6f8016aa6d79c3f588783af9fdc06cafe131fd0d3faf560914b13
 ## Add the wait script to the image
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
