@@ -8,7 +8,6 @@ RUN mvn clean package -DskipTests
 
 FROM adoptopenjdk:11-jre-hotspott@sha256:ad6431b2e2a6f8016aa6d79c3f588783af9fdc06cafe131fd0d3faf560914b13
 RUN mkdir /app
-RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
 COPY --from=build /project/target/repair-service-1.0.0.jar /app/repair-service.jar 
 WORKDIR /app
 ENTRYPOINT ["java", "-jar", "repair-service.jar"]
