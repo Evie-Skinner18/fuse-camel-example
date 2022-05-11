@@ -1,1 +1,0 @@
-java -jar ./housing-service/target/housing-service-1.0.0.jar && sleep 5 && java -jar ./repair-service/target/repair-service-1.0.0.jar 

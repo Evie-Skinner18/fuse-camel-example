@@ -40,5 +40,4 @@ public class Resident {
         this.residentInfo = residentInfo;
     }
 
-    // getters and setters or other properties
 }
