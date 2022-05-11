@@ -1,6 +1,5 @@
 package com.redhat.fuse.boosters.cb;
 
-import org.apache.camel.Header;
 import org.springframework.stereotype.Service;
 import org.apache.camel.jsonpath.JsonPath;
 
@@ -26,12 +25,6 @@ public class HousingServiceImpl implements HousingService {
         }
 
         return new HousingResponse(housingMessage);
-    }
-
-    public Repair getRepairFromXml(@Header("repairInfo") String repairInfo) {
-        Repair repair = new Repair(repairInfo);
-      
-        return repair;
     }
 
 }
