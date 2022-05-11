@@ -15,6 +15,12 @@ public class HousingServiceImpl implements HousingService {
             northgatePropertyNumber, 
             partyReference);
         
+        housingMessage = validateHousingMessage(housingMessage);
+
+        return new HousingResponse(housingMessage);
+    }
+
+    public HousingMessage validateHousingMessage(HousingMessage housingMessage) {
         String name = housingMessage.residentInfo.firstName.trim().toLowerCase();
         boolean isValidResident = !name.equals("barry");
         housingMessage.residentInfo.isValidResident = isValidResident; 
@@ -24,7 +30,7 @@ public class HousingServiceImpl implements HousingService {
             housingMessage.residentInfo.isValidResident = false;
         }
 
-        return new HousingResponse(housingMessage);
+        return housingMessage;
     }
 
 }
