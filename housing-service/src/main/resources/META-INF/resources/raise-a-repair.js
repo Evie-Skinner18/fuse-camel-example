@@ -1,15 +1,5 @@
-const idealPostcodesScript = document.createElement('script');
-idealPostcodesScript.src = 'https://cdn.jsdelivr.net/npm/@ideal-postcodes/address-finder-bundled@4';
-document.getElementsByTagName('head')[0].appendChild(idealPostcodesScript);
-
-const jQueryScript = document.createElement('script');
-jQueryScript.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
-document.getElementsByTagName('head')[0].appendChild(jQueryScript);
 
 $(document).ready(function() {
-
-    alert('connected');
-
     const findAResidentSection = $("#find-a-resident-section");
     const errorMessage = $("#error-message");
     const raiseARepairButton = $("#raise-a-repair-button");
