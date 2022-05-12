@@ -31,6 +31,8 @@ For more info on the key technologies used, please read [this document](https://
 ## Architecture Overview
 - We built this from a RedHat Fuse booster (quickstart) project
 - It has a front end composed of a single HTML page, which uses a form to capture user input
+- For the purposes of this POC, the 'Ideal Postcodes API key' field allows us to use the Ideal Postcodes API (an external API that does an address lookup), without having to include an API key in the codebase. You can enter an API key that's unique to you (see instructions on how to generate the API key below).
+- We built it that way because it's not possible to use jQuery to access environment variables in an .env file. We could have done this with a Vue or React app, but that was beyond the scope of this investigation.
 - The 'Postcode' field takes a postcode and uses the [Ideal Postcodes postcode lookup API](https://docs.ideal-postcodes.co.uk/docs/postcode-lookup) to return a list of addresses found at that postcode. 
 - Ideal Postcodes returns a UPRN in each address object returned. When the user selects their address from the list, the form populates a UPRN field with that address's UPRN.
 - The front end uses jQuery to invoke the get() endpoint _/housing/{residentInfo}_ in the housingService, submitting a JSON object of the details captured in the form
@@ -45,11 +47,15 @@ For more info on the key technologies used, please read [this document](https://
 ## How to Run the App
 
 ### Prerequesites
-- Install Java: https://www.java.com/en/download/ 
+- Install [Java](https://www.java.com/en/download/)
 - Install Maven: 
     - https://maven.apache.org/what-is-maven.html 
     - Via Homebrew https://formulae.brew.sh/formula/maven#default 
-- Install Docker Desktop: https://docs.docker.com/get-docker/ 
+- Install [Docker Desktop](https://docs.docker.com/get-docker/)
+- You will need to generate an API key in order to use the form and access the postcode lookup API.
+    - Sign up for a free [Ideal Postcodes account](https://ideal-postcodes.co.uk/users/sign_up)
+    - Once you have activated your account, navigate to your [Ideal Postcodes dashboard](https://ideal-postcodes.co.uk/tokens) to find your API key
+    - Copy the API key (a long string of mainly letters and numbers) and keep it safe for later
 
 ### Installation Steps
 - Clone this repo

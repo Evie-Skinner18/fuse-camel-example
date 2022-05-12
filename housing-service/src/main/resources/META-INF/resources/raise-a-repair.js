@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     const findAResidentSection = $("#find-a-resident-section");
     const errorMessage = $("#error-message");
@@ -7,23 +6,15 @@ $(document).ready(function() {
     findAResidentSection.hide();
     errorMessage.hide();
     raiseARepairButton.hide();
-
-                            // abstract into separate function
-    IdealPostcodes.AddressFinder.setup({
-        apiKey: "ak_l2sxknjt5J2bI04h1jkzhYDrw6e4l",
-        inputField: "#postcode-input",
-        outputFields: {
-            line_1: "#first_line",
-            line_2: "#second_line",
-            line_3: "#third_line",
-            post_town: "#post_town",
-            postcode: "#postcode",
-            uprn: "#uprn"
-        }
-    });
+    // instruct how to get an api key in the readme
+    // "ak_l2sxknjt5J2bI04h1jkzhYDrw6e4l"
+    
+    $("#api-key").change((event) => {
+        const idealPostcodesApiKey = $("#api-key").val();
+        setupIdealPostcodes(idealPostcodesApiKey);  
+    });  
 
     $("#postcode").change((event) => {
-                                // abstract into separate function
         const firstLineOfAddressValue = $("#first_line").val();
 
         if (firstLineOfAddressValue) {
@@ -33,11 +24,26 @@ $(document).ready(function() {
     
     $("#find-a-resident-button").click(async function(e) {
         e.preventDefault();
-        callHousingService();
+        const residentInfo = getResidentInfo();
+        callHousingService(residentInfo);
     });
 
-    async function callHousingService() {
-                                // abstract into separate function
+    function setupIdealPostcodes(apiKey) {
+        IdealPostcodes.AddressFinder.setup({
+            apiKey: apiKey,
+            inputField: "#postcode-input",
+            outputFields: {
+                line_1: "#first_line",
+                line_2: "#second_line",
+                line_3: "#third_line",
+                post_town: "#post_town",
+                postcode: "#postcode",
+                uprn: "#uprn"
+            }
+        });
+    }
+
+    function getResidentInfo() {
         const firstNameInput = $("#first-name");
         const surnameInput = $("#surname");
         const uprnInput = $("#uprn");
@@ -52,33 +58,45 @@ $(document).ready(function() {
             uprn: `${uprnValue}`
         }
 
+        return residentInfoObject;
+    }
+
+    async function callHousingService(residentInfoObject) {
         const jsonResidentInfo = JSON.stringify(residentInfoObject);
 
         $.getJSON(`/camel/housing/${jsonResidentInfo}`, function (res) {
             if (res) {
-                // abstract into separate function
                 const housingMessage = res.housingMessage;
-                const residentName = housingMessage.residentInfo.firstName;
                 const isValidResident = housingMessage.residentInfo.isValidResident;
                 const nameNearlyMatchingFirstName = housingMessage.residentInfo.nameNearlyMatchingFirstName;
-                const northgatePropertyNumber = housingMessage.northgatePropertyNumber;
-                const partyReference = housingMessage.partyReference;
 
-                const findAResidentMessage = isValidResident? 
-                    `<div id='housing-result'>
-                        <p>We have found a resident matching those details.</p>
-                        <p>Name: ${residentName}</p>
-                        <p>Northgate property reference: ${northgatePropertyNumber}</p>
-                        <p>Party reference: ${partyReference}</p>
-                    </div>`
-                    :
-                    "<div id='housing-result'></div>";
+                const findAResidentMessage = getFindAResidentMessageByResidentValidity(isValidResident, housingMessage);
                 
                 $("#housing-result").replaceWith(findAResidentMessage);
 
                 showNextStepByResidentValidity(isValidResident, nameNearlyMatchingFirstName);
             }
         });
+    }
+
+    function getFindAResidentMessageByResidentValidity(isValidResident, housingMessage) {
+        let findAResidentMessage = "<div id='housing-result'></div>";
+
+        if (isValidResident) {
+            const residentName = housingMessage.residentInfo.firstName;
+            const northgatePropertyNumber = housingMessage.northgatePropertyNumber;
+            const partyReference = housingMessage.partyReference;
+
+            findAResidentMessage = 
+            `<div id='housing-result'>
+                <p>We have found a resident matching those details.</p>
+                <p>Name: ${residentName}</p>
+                <p>Northgate property reference: ${northgatePropertyNumber}</p>
+                <p>Party reference: ${partyReference}</p>
+            </div>`
+        }
+
+        return findAResidentMessage;
     }
 
     function showNextStepByResidentValidity(isValidResident, nameNearlyMatchingFirstName) {
@@ -89,7 +107,6 @@ $(document).ready(function() {
         }
     }
 
-    // not very dry
     function showErrorMessage(nameNearlyMatchingFirstName) {
         raiseARepairButton.hide();
 

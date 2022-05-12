@@ -31,5 +31,7 @@ hs_err_pid*
 .project
 .classpath
 
+# build assets
 target
 node_modules
+.env
