@@ -62,11 +62,11 @@ For more info on the key technologies used, please read [this document](https://
 - In your Terminal, navigate to the housing-service directory
 `cd careless-thumb/housing-service`
 - Restore all the project dependencies for the housing-service
-`maven clean package`
+`mvn clean package`
 - Navigate to the repair-service directory
 `cd ../repair-service`
 - Restore all the project dependencies for the repair-service
-`maven clean package`
+`mvn clean package`
 
 ### How to Run via Docker
 - Navigate back to the root directory
@@ -81,8 +81,7 @@ For more info on the key technologies used, please read [this document](https://
 `cd repair-service`
 - Run the repair-service API
 `mvn`
-- Open up another Terminal tab 
-Press command + T
+- Open up another Terminal tab by pressing command + T
 - Navigate to the housing-service
 `cd ../housing-service`
 - Run the housing-service API
