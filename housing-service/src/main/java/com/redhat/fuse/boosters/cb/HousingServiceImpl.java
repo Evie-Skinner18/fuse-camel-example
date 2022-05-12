@@ -1,6 +1,5 @@
 package com.redhat.fuse.boosters.cb;
 
-import org.apache.camel.Header;
 import org.springframework.stereotype.Service;
 import org.apache.camel.jsonpath.JsonPath;
 
@@ -16,6 +15,12 @@ public class HousingServiceImpl implements HousingService {
             northgatePropertyNumber, 
             partyReference);
         
+        housingMessage = validateHousingMessage(housingMessage);
+
+        return new HousingResponse(housingMessage);
+    }
+
+    public HousingMessage validateHousingMessage(HousingMessage housingMessage) {
         String name = housingMessage.residentInfo.firstName.trim().toLowerCase();
         boolean isValidResident = !name.equals("barry");
         housingMessage.residentInfo.isValidResident = isValidResident; 
@@ -25,13 +30,7 @@ public class HousingServiceImpl implements HousingService {
             housingMessage.residentInfo.isValidResident = false;
         }
 
-        return new HousingResponse(housingMessage);
-    }
-
-    public Repair getRepairFromXml(@Header("repairInfo") String repairInfo) {
-        Repair repair = new Repair(repairInfo);
-      
-        return repair;
+        return housingMessage;
     }
 
 }
